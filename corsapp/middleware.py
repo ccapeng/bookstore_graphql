@@ -21,6 +21,5 @@ class CorsMiddleware(object):
             response["Access-Control-Allow-Origin"] = "*"
             response["Access-Control-Allow-Headers"] = "*"
             response["Access-Control-Allow-Methods"] = "*"
-        print("response", response)
 
         return response

@@ -114,52 +114,54 @@ class CreateCategory(graphene.Mutation):
     class Arguments:
         input = CategoryInput(required=True)
 
-    ok = graphene.Boolean()
-    category = graphene.Field(CategoryType)
+    id = graphene.ID()
+    name = graphene.String()
 
     @staticmethod
     def mutate(root, info, input=None):
-        ok = True
         category_instance = Category(name=input.name)
         category_instance.save()
-        return CreateCategory(ok=ok, category=category_instance)
-
+        return CreateCategory(
+            id=category_instance.id, 
+            name=category_instance.name
+        )
 
 class UpdateCategory(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         input = CategoryInput(required=True)
 
-    ok = graphene.Boolean()
-    category = graphene.Field(CategoryType)
+    id = graphene.ID()
+    name = graphene.String()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
         category_instance = Category.objects.get(pk=id)
         if category_instance:
-            ok = True
             category_instance.name = input.name
             category_instance.save()
-            return UpdateCategory(ok=ok, category=category_instance)
-        return UpdateCategory(ok=ok, category=None)
+            return UpdateCategory(
+                id=category_instance.id, 
+                name=category_instance.name
+            )
+        return UpdateCategory()
 
 
 class DeleteCategory(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
+        input = CategoryInput()
 
-    ok = graphene.Boolean()
+    id = graphene.ID()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
         category_instance = Category.objects.get(pk=id)
+        print("deleteCategory:", id)
         if category_instance:
-            ok = True
             category_instance.delete()
-            return DeleteCategory(ok=ok)
-        return DeleteCategory(ok=ok)
+            return DeleteCategory(id=id)
+        return DeleteCategory(id=id)
 
 
 # Create mutations for publisher
@@ -167,15 +169,17 @@ class CreatePublisher(graphene.Mutation):
     class Arguments:
         input = PublisherInput(required=True)
 
-    ok = graphene.Boolean()
-    publisher = graphene.Field(PublisherType)
+    id = graphene.ID()
+    name = graphene.String()
 
     @staticmethod
     def mutate(root, info, input=None):
-        ok = True
         publisher_instance = Publisher(name=input.name)
         publisher_instance.save()
-        return CreatePublisher(ok=ok, publisher=publisher_instance)
+        return CreatePublisher(
+            id=publisher_instance.id, 
+            name=publisher_instance.name
+        )
 
 
 class UpdatePublisher(graphene.Mutation):
@@ -183,26 +187,27 @@ class UpdatePublisher(graphene.Mutation):
         id = graphene.Int(required=True)
         input = PublisherInput(required=True)
 
-    ok = graphene.Boolean()
-    publisher = graphene.Field(PublisherType)
+    id = graphene.ID()
+    name = graphene.String()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
         publisher_instance = Publisher.objects.get(pk=id)
         if publisher_instance:
-            ok = True
             publisher_instance.name = input.name
             publisher_instance.save()
-            return UpdatePublisher(ok=ok, publisher=publisher_instance)
-        return UpdatePublisher(ok=ok, publisher=None)
+            return UpdatePublisher(
+                id=publisher_instance.id, 
+                name=publisher_instance.name
+            )
+        return UpdatePublisher()
 
 
 class DeletePublisher(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
 
-    ok = graphene.Boolean()
+    id = graphene.ID()
 
     @staticmethod
     def mutate(root, info, id, input=None):
@@ -211,8 +216,8 @@ class DeletePublisher(graphene.Mutation):
         if publisher_instance:
             ok = True
             publisher_instance.delete()
-            return DeletePublisher(ok=ok)
-        return DeletePublisher(ok=ok)
+            return DeletePublisher(id=id)
+        return DeletePublisher()
 
 
 # Create mutations for author
@@ -220,18 +225,22 @@ class CreateAuthor(graphene.Mutation):
     class Arguments:
         input = AuthorInput(required=True)
 
-    ok = graphene.Boolean()
-    author = graphene.Field(AuthorType)
+    id = graphene.ID()
+    lastName = graphene.String()
+    firstName = graphene.String()
 
     @staticmethod
     def mutate(root, info, input=None):
-        ok = True
         author_instance = Author(
             last_name=input.lastName,
             first_name=input.firstName
         )
         author_instance.save()
-        return CreateAuthor(ok=ok, author=author_instance)
+        return CreateAuthor(
+            id=author_instance.id,
+            lastName=author_instance.last_name,
+            firstName=author_instance.first_name
+        )
 
 
 class UpdateAuthor(graphene.Mutation):
@@ -239,37 +248,38 @@ class UpdateAuthor(graphene.Mutation):
         id = graphene.Int(required=True)
         input = AuthorInput(required=True)
 
-    ok = graphene.Boolean()
-    author = graphene.Field(AuthorType)
+    id = graphene.ID()
+    lastName = graphene.String()
+    firstName = graphene.String()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
         author_instance = Author.objects.get(pk=id)
         if author_instance:
-            ok = True
             author_instance.last_name = input.lastName
             author_instance.first_name = input.firstName
             author_instance.save()
-            return UpdateAuthor(ok=ok, author=author_instance)
-        return UpdateAuthor(ok=ok, author=None)
+            return UpdateAuthor(
+                id=author_instance.id,
+                lastName=author_instance.last_name,
+                firstName=author_instance.first_name
+            )
+        return UpdateAuthor()
 
 
 class DeleteAuthor(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
 
-    ok = graphene.Boolean()
+    id = graphene.ID()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
         author_instance = Author.objects.get(pk=id)
         if author_instance:
-            ok = True
             author_instance.delete()
-            return DeleteAuthor(ok=ok)
-        return DeleteAuthor(ok=ok)
+            return DeleteAuthor(id=id)
+        return DeleteAuthor()
 
 
 # Create mutations for book

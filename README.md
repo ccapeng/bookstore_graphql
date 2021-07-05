@@ -13,7 +13,9 @@
 		`python -m venv env`
 	- Then start the virtual environment `.\env\Scripts\activate`
 	- Also for the very first time, run `pip install -r requirements.txt`
-	- To start server, run `python manage.py runserver`
+	- To start server, run `python manage.py runserver`  
+	  To start server with particular port number,
+	  run `python manage.py runserver 0.0.0.0:8001`  
 	- Should able to connect it in http://localhost:8000/graphql/
 	
 - For the frontend, please go to
